@@ -35,6 +35,18 @@ app.get('/stockByName/:SC_NAME', async(req, res) => {
 });
 
 
+// get stock History
+app.get('/stockHistory/:SC_NAME', async(req, res) => {
+    let obj = req.params;
+    try {
+        const stocks = await Stock.find(obj).select('Date HIGH LOW');
+        res.status(200).json(stocks);
+    } catch (error) {
+        res.status(500).json({messgae: error.message});
+    }
+});
+
+
 
 mongoose.connect('mongodb+srv://tk281141:8506938133@cluster0.j8pkvht.mongodb.net/StockDB?retryWrites=true&w=majority')
   .then(() => { 
