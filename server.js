@@ -25,7 +25,7 @@ app.get('/stocks', async(req, res) => {
 
 
 // get stockByName 
-// localhost:3000/stockByName/AEGIS LOGIS 
+// localhost:3000/stockByName/stock name 
 app.get('/stockByName/:SC_NAME', async(req, res) => {
     let obj = req.params;
     console.log(obj);
@@ -39,7 +39,7 @@ app.get('/stockByName/:SC_NAME', async(req, res) => {
 
 
 // get stock History
-// localhost:3000/stockHistory/AEGIS LOGIS 
+// localhost:3000/stockHistory/stock name
 app.get('/stockHistory/:SC_NAME', async(req, res) => {
     let obj = req.params;
     try {
@@ -52,6 +52,7 @@ app.get('/stockHistory/:SC_NAME', async(req, res) => {
 
 
 // add favouritestocks
+// localhost:3000/addFavouriteStock/AEGIS LOGIS 
 app.get('/addFavouriteStock/:SC_NAME', async(req, res) => {
     let obj = req.params;
     try {
@@ -76,6 +77,7 @@ app.get('/addFavouriteStock/:SC_NAME', async(req, res) => {
 
 
 // get all favourite stocks
+// localhost:3000/favouritestocks/AEGIS LOGIS 
 app.get('/favouritestocks', async(req, res) => {
     try {
         const stocks = await FavoriteStock.find();
@@ -86,11 +88,28 @@ app.get('/favouritestocks', async(req, res) => {
 });
 
 
+
+// delete favourite stock by name
+// localhost:3000/favouriteStockByName/AEGIS LOGIS 
+app.get('/favouriteStockByName/:SC_NAME', async(req, res) => {
+    let obj = req.params;
+    try {
+        const stocks = await FavoriteStock.findOne(obj);
+        FavoriteStock.deleteOne(stocks).then((result) => {
+        res.status(200).json(result);
+        });
+    } catch (error) {
+        res.status(500).json({messgae: error.message});
+    }
+});
+
+
+
 mongoose.connect('mongodb+srv://tk281141:8506938133@cluster0.j8pkvht.mongodb.net/StockDB?retryWrites=true&w=majority')
   .then(() => { 
     console.log('Database Connected!') ;
     app.listen(3000, ()=>{
         console.log("Server is running on port 3000");
-    });
+    })
 })
   .catch((error) => { console.log(error) } );
